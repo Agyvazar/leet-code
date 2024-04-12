@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 public class Main {
     public static void main(String[] args) {
         int[] nums = {5,6,4,3,10};
@@ -8,12 +6,13 @@ public class Main {
     }
 
     public static int maxProfit(int[] prices) {
-        int buy = Integer.MAX_VALUE;
-        int sell = 0;
-        for (int price : prices) {
-            buy = Math.min(buy, price);
-            sell = Math.max(sell, price - buy);
+        if (prices.length == 0 || prices.length == 1) return 0;
+        int profit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                profit += prices[i] - prices[i - 1];
+            }
         }
-        return sell;
+        return profit;
     }
 }

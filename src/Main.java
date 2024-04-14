@@ -1,31 +1,23 @@
 public class Main {
     public static void main(String[] args) {
-        int[] nums = {1,2,1,1,1};
-        int[] nums1 = {10,9,8,7,6,5,4,3,2,1,1,0};
+        int[] nums = {3,0,6,1,5};
 
-        System.out.println(canJump(nums1));
+        System.out.println(hIndex(nums));
     }
 
-    public static int canJump(int[] nums) {
-        if (nums.length == 1) return 0;
-        int start = 0;
-        int jumps = 1;
-        while (start + nums[start] < nums.length - 1) {
-            start = findMaxIdx(nums, start + 1, nums[start]);
-            jumps++;
-        }
-        return jumps;
-    }
+    public static int hIndex(int[] citations) {
+        int[] distribution = new int[1001];
 
-    public static int findMaxIdx(int[] nums, int start, int jumpLength) {
-        int max = 0;
-        int maxIdx = start;
-        for (int i = start; i <= start + jumpLength - 1; i++) {
-            if (max <= nums[i] + i - maxIdx) {
-                maxIdx = i;
-                max = nums[i];
-            }
+        for (int citation : citations) {
+            distribution[citation]++;
         }
-        return maxIdx;
+
+        int accumulator = 0;
+
+        for (int i = distribution.length - 1; i > 0; i--) {
+            accumulator = accumulator + distribution[i];
+            if (accumulator >= i) return i;
+        }
+        return 0;
     }
 }

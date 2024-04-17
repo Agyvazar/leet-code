@@ -1,34 +1,47 @@
-import java.util.Arrays;
+import java.util.Stack;
 
 public class Main {
     public static void main(String[] args) {
-        int[] gas = {5,1,2,3,4};
-        int[] cost = {4,4,1,5,1};
+        int[] ratings = {1,0,2};
+        int[] ratings1 = {1,2,2};
+        int[] ratings2 = {1,3,2,2,1};
+        int[] ratings3 = {1,2,87,87,87,2,1};
 
-        System.out.println(canCompleteCircuit(gas, cost));
+        System.out.println(candy(ratings3));
     }
 
-    public static int canCompleteCircuit(int[] gas, int[] cost) {
-        int[] peaks = new int[gas.length];
-        for (int i = 0; i < gas.length; i++) {
-            peaks[i] = gas[i] - cost[i];
-        }
-        System.out.println(Arrays.toString(peaks));
-
-        int startPos = 0;
-        int idx = 0;
-        int accumulator = 0;
-        if (Arrays.stream(peaks).sum() < 0) return -1;
-        for (int i = 0; i < peaks.length; i++) {
-            accumulator = accumulator + peaks[idx];
-            if (accumulator < 0) {
-                accumulator = 0;
-                i = 0;
-                startPos = idx == peaks.length - 1 ? 0 : idx + 1;
+    public static int candy(int[] ratings) {
+        if (ratings.length == 0) return 0;
+        if (ratings.length == 1) return 1;
+        int result = 1;
+        int previous = 1;
+        int idxLocalMax = 0;
+        int localMaxCandy = 1;
+        for (int i = 1; i < ratings.length; i++) {
+            if (ratings[i] > ratings[i - 1]) {
+                previous = previous + 1;
+                result = result + previous;
+                idxLocalMax = i;
+                localMaxCandy = previous;
+            } else if (ratings[i] < ratings[i - 1]) {
+                if (previous == 1) {
+                    if (i - idxLocalMax < localMaxCandy) {
+                        result = result + i - idxLocalMax;
+                    } else {
+                        result = result + i - idxLocalMax + 1;
+                        localMaxCandy = localMaxCandy + 1;
+                    }
+                } else {
+                    previous = 1;
+                    result = result + previous;
+                }
+            } else if (ratings[i] == ratings[i - 1]) {
+                previous = 1;
+                idxLocalMax = i;
+                localMaxCandy = previous;
+                result = result + previous;
             }
-            idx = idx == peaks.length - 1 ? 0 : idx + 1;
-
         }
-        return startPos;
+        return result;
     }
 }

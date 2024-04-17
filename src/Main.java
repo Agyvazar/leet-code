@@ -1,12 +1,28 @@
+import java.util.Arrays;
+
 public class Main {
     public static void main(String[] args) {
-        RandomizedSet randomizedSet = new RandomizedSet();
-        System.out.println(randomizedSet.insert(1));
-        System.out.println(randomizedSet.remove(2));
-        System.out.println(randomizedSet.insert(2));
-        System.out.println(randomizedSet.getRandom());
-        System.out.println(randomizedSet.remove(1));
-        System.out.println(randomizedSet.insert(2));
-        System.out.println(randomizedSet.getRandom());
+        int[] nums = {3,1,6,1,5};
+
+        System.out.println(Arrays.toString(productExceptSelf(nums)));
+    }
+
+    public static int[] productExceptSelf(int[] nums) {
+        int n = nums.length;
+        int[] result = new int[n];
+
+        int product = 1;
+        for (int i = 0; i < n; i++) {
+            result[i] = product;
+            product = product * nums[i];
+        }
+
+        product = 1;
+        for (int i = n - 1; i >= 0; i--) {
+            result[i] = result[i] * product;
+            product = product * nums[i];
+        }
+
+        return result;
     }
 }

@@ -1,4 +1,5 @@
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -8,19 +9,26 @@ public class Main {
     }
 
     public static int romanToInt(String s) {
-        char[] chars = s.toCharArray();
-        int result = 0;
-        for (int i = chars.length - 1; i >= 0; i--) {
-            switch (chars[i]) {
-                case 'M': result += 1000; break;
-                case 'D': result += 500; break;
-                case 'C': result += result < 300 ? 100 : -100; break;
-                case 'L': result += 50; break;
-                case 'X': result += result < 30 ? 10 : -10; break;
-                case 'V': result += 5; break;
-                case 'I': result += result < 3 ? 1 : -1; break;
+        Map<Character, Integer> m = new HashMap<>();
+
+        m.put('I', 1);
+        m.put('V', 5);
+        m.put('X', 10);
+        m.put('L', 50);
+        m.put('C', 100);
+        m.put('D', 500);
+        m.put('M', 1000);
+
+        int ans = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (i < s.length() - 1 && m.get(s.charAt(i)) < m.get(s.charAt(i + 1))) {
+                ans -= m.get(s.charAt(i));
+            } else {
+                ans += m.get(s.charAt(i));
             }
         }
-        return result;
+
+        return ans;
     }
 }

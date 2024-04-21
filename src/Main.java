@@ -2,32 +2,25 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        int[] height = {0,1,0,2,1,0,1,3,2,1,2,1};
+        String s = "MCMXCIV";
 
-        System.out.println(trap(height));
+        System.out.println(romanToInt(s));
     }
 
-    public static int trap(int[] height) {
-        int left = 0, right = height.length - 1;
-        int leftMax = height[0], rightMax = height[height.length - 1];
-        int water = 0;
-        while (left < right) {
-            if (leftMax < rightMax) {
-                left++;
-                if (leftMax < height[left]) {
-                    leftMax = height[left];
-                } else {
-                    water += leftMax - height[left];
-                }
-            } else {
-                right--;
-                if (rightMax < height[right]) {
-                    rightMax = height[right];
-                } else {
-                    water += rightMax - height[right];
-                }
+    public static int romanToInt(String s) {
+        char[] chars = s.toCharArray();
+        int result = 0;
+        for (int i = chars.length - 1; i >= 0; i--) {
+            switch (chars[i]) {
+                case 'M': result += 1000; break;
+                case 'D': result += 500; break;
+                case 'C': result += result < 300 ? 100 : -100; break;
+                case 'L': result += 50; break;
+                case 'X': result += result < 30 ? 10 : -10; break;
+                case 'V': result += 5; break;
+                case 'I': result += result < 3 ? 1 : -1; break;
             }
         }
-        return water;
+        return result;
     }
 }

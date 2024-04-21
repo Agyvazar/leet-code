@@ -8,26 +8,25 @@ public class Main {
     }
 
     public static int trap(int[] height) {
-        if (height.length == 0 || height.length == 1) return 0;
-        int[] toRightPeaks = new int[height.length];
-        int[] toLeftPeaks = new int[height.length];
-
-        int max = 0;
-        for (int i = 0; i < height.length; i++) {
-            max = Math.max(height[i], max);
-            toRightPeaks[i] = max;
-        }
-
-        max = 0;
-        for (int i = height.length - 1; i >= 0; i--) {
-            max = Math.max(height[i], max);
-            toLeftPeaks[i] = max;
-        }
-
+        int left = 0, right = height.length - 1;
+        int leftMax = height[0], rightMax = height[height.length - 1];
         int water = 0;
-
-        for (int i = 1; i < height.length - 1; i++) {
-            water = water + Math.max(Math.min(toRightPeaks[i - 1], toLeftPeaks[i + 1]) - height[i], 0);
+        while (left < right) {
+            if (leftMax < rightMax) {
+                left++;
+                if (leftMax < height[left]) {
+                    leftMax = height[left];
+                } else {
+                    water += leftMax - height[left];
+                }
+            } else {
+                right--;
+                if (rightMax < height[right]) {
+                    rightMax = height[right];
+                } else {
+                    water += rightMax - height[right];
+                }
+            }
         }
         return water;
     }
